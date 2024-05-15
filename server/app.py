@@ -50,10 +50,11 @@ def post_video_game():
 
 
 @app.delete('/video-games/<int:id>')
-def delete_video_games():
+def delete_video_games(id):
     vg = VideoGame.query.where(VideoGame.id == id).first()
     if vg:
         db.session.delete(vg)
+        db.session.commit()
         return {}, 204
     else:
         return { 'error': 'Not found' }, 404
@@ -115,7 +116,7 @@ def review_by_id(id):
 def post_review():
     rev = Review(
         rating=request.json.get('rating'),
-        video_game_id=request.json.get('video_game_id'),
+        videogame_id=request.json.get('videogame_id'),
         publication_id=request.json.get('publication_id')
     )
     db.session.add(rev)
